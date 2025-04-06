@@ -29,7 +29,25 @@ function Gameboard() {
     const place = (move, player) => { /* place the player's marker in the right place */
         gameState[move - 1] = player;
     };
-    const hasWon = (player) => { /* check if the given player has won */ };
+    
+    const hasWon = (player) => { /* check if the given player has won */
+        const winningStates = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizontal
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
+            [0, 4, 8], [2, 4, 6] // diagonal
+        ];
+        for (state of winningStates) {
+            if (
+                gameState[state[0]] != 0
+                && gameState[state[0]] == gameState[state[1]]
+                && gameState[state[1]] == gameState[state[2]]
+            ) { // If all three are the same non-zero marker
+                return gameState[state[0]];
+            }
+        }
+        return 0;
+
+    };
 
     return {
         display,
@@ -67,7 +85,8 @@ const board = Gameboard();
 const player1 = Player('Alice', 1);
 const player2 = Player('Bob', 2);
 board.display();
-game.getMove(board, player1);
-board.display();
-game.getMove(board, player2);
-board.display();
+while (board.hasWon() == 0) {
+    game.getMove(board, player1);
+    board.display();
+}
+
