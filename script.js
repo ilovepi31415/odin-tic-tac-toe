@@ -66,20 +66,22 @@ function Player(name, marker) {
 }
 
 function Game() {
-    let turn = 0;
+    let turn;
     let board;
     let players = [null, null];
-    let catGame = false;
+    let catGame;
 
 
     const startGame = () => {
         board = Gameboard();
         players[0] = Player('Alice', 1);
         players[1] = Player('Bob', 2);
+        turn = 0;
+        catGame = false;
+
         board.display();
         while (board.hasWon() == 0 && catGame == false) {
             getMove();
-            board.display();
         }
     }
 
@@ -95,16 +97,24 @@ function Game() {
         do {
             move = prompt(`What move are you making, ${activePlayer.name}?`);   
         } while (!board.isLegalMove(move));
+
         board.place(move, activePlayer.marker);
+        board.display();
         turn ++;
+    }
+
+    const playAgain = () => {
+        return (prompt('Play Again? (Y/n)') != 'n');
     }
 
     return {
         startGame,
-        getMove, 
+        playAgain,
     }
 }
 
 const game = Game();
-game.startGame();
+do {
+    game.startGame();
+} while (game.playAgain() == true);
 
