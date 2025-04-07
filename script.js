@@ -66,27 +66,45 @@ function Player(name, marker) {
 }
 
 function Game() {
-    let turn = 1;
-    const getMove = (board, player) => {
+    let turn = 0;
+    let board;
+    let players = [null, null];
+    let catGame = false;
+
+
+    const startGame = () => {
+        board = Gameboard();
+        players[0] = Player('Alice', 1);
+        players[1] = Player('Bob', 2);
+        board.display();
+        while (board.hasWon() == 0 && catGame == false) {
+            getMove();
+            board.display();
+        }
+    }
+
+    const getMove = () => {
+        if (turn == 9) {
+            console.log('cat game');
+            catGame = true;
+            return;
+        }
+
         let move;
+        const activePlayer = players[turn % 2];
         do {
-            move = prompt(`What move are you making, ${player.name}?`);   
+            move = prompt(`What move are you making, ${activePlayer.name}?`);   
         } while (!board.isLegalMove(move));
-        board.place(move, player.marker);
+        board.place(move, activePlayer.marker);
+        turn ++;
     }
 
     return {
-       getMove, 
+        startGame,
+        getMove, 
     }
 }
 
 const game = Game();
-const board = Gameboard();
-const player1 = Player('Alice', 1);
-const player2 = Player('Bob', 2);
-board.display();
-while (board.hasWon() == 0) {
-    game.getMove(board, player1);
-    board.display();
-}
+game.startGame();
 
