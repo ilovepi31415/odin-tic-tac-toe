@@ -1,4 +1,5 @@
 const grid = document.querySelector('.board');
+const restart = document.querySelector('.restart');
 
 function Gameboard() {
     // prep board
@@ -33,6 +34,7 @@ function Gameboard() {
     }
 
     const isLegalMove = (move) => { /* verify the move as legal */ 
+        console.log('hi');
         return gameState[move - 1] == 0;
     };
 
@@ -100,20 +102,19 @@ function Game() {
     }
 
     const getMove = (move) => {
-        if (board.hasWon() == 0 && catGame == false) {
-            if (turn == 9) {
-                console.log('cat game');
-                catGame = true;
-                return;
-            }
-    
-            const activePlayer = players[turn % 2];   
-            board.place(move, activePlayer.marker);
-            console.log(move);
-            board.display();
-            turn ++;
-            
+        if (board.hasWon() != 0 || catGame == true) {return;}
+        if (!board.isLegalMove(move)) {return;}
+        if (turn == 9) {
+            console.log('cat game');
+            catGame = true;
+            return;
         }
+
+        const activePlayer = players[turn % 2];   
+        board.place(move, activePlayer.marker);
+        console.log(move);
+        board.display();
+        turn ++;
     }
 
     const playAgain = () => {
@@ -126,6 +127,11 @@ function Game() {
     }
 }
 
-const game = Game();
+let game = Game();
 game.startGame();
+
+restart.addEventListener('click', () => {
+    game = Game();
+    game.startGame();
+});
 

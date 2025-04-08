@@ -1,8 +1,14 @@
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 90vh;
+    gap: 16px;
+}
+
+.title {
+    font-size: 72px;
 }
 
 .board {
@@ -15,4 +21,9 @@ body {
     background-color: lightgrey;
     width: 250px;
     height: 250px;
+}
+
+.restart {
+    background-color: gray;
+    padding: 12px;
 }
