@@ -1,9 +1,12 @@
+const grid = document.querySelector('.board');
+
 function Gameboard() {
     // prep board
     let markers = [' ', 'X', 'O'];
+    let colors = ['lightgrey', 'blue', 'red'];
     let gameState = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    const display = () => { /* display the board */
+    const display = async () => { /* display the board */
         for (row = 0; row < 3; row++) {
             let line = '';
             for (col = 0; col < 3; col++) {
@@ -14,7 +17,14 @@ function Gameboard() {
             if (row < 2) {console.log('-----------')}
         }
         console.log(''); // Adds blank line for better spacing
+        displayHTML();
     };
+
+    const displayHTML = () => { /* displays via DOM */
+        for (i = 0; i < gameState.length; i++) {
+            document.querySelector(`.board div:nth-child(${i + 1})`).style.backgroundColor = colors[gameState[i]];
+        }
+    }
 
     const setMarker = (index, symbol) => {
         if (index > 0) { // Make sure the blank symbol isn't changed
@@ -71,7 +81,6 @@ function Game() {
     let players = [null, null];
     let catGame;
 
-
     const startGame = () => {
         board = Gameboard();
         players[0] = Player('Alice', 1);
@@ -79,28 +88,32 @@ function Game() {
         turn = 0;
         catGame = false;
 
-        board.display();
-        while (board.hasWon() == 0 && catGame == false) {
-            getMove();
+        for (i = 1; i <= 9; i++) {
+            const cell = document.querySelector(`.board div:nth-child(${i})`)
+            cell.dataset.order = i;
+            cell.addEventListener('click', () => {
+                getMove(cell.dataset.order);
+            });
         }
+
+        board.display();
     }
 
-    const getMove = () => {
-        if (turn == 9) {
-            console.log('cat game');
-            catGame = true;
-            return;
+    const getMove = (move) => {
+        if (board.hasWon() == 0 && catGame == false) {
+            if (turn == 9) {
+                console.log('cat game');
+                catGame = true;
+                return;
+            }
+    
+            const activePlayer = players[turn % 2];   
+            board.place(move, activePlayer.marker);
+            console.log(move);
+            board.display();
+            turn ++;
+            
         }
-
-        let move;
-        const activePlayer = players[turn % 2];
-        do {
-            move = prompt(`What move are you making, ${activePlayer.name}?`);   
-        } while (!board.isLegalMove(move));
-
-        board.place(move, activePlayer.marker);
-        board.display();
-        turn ++;
     }
 
     const playAgain = () => {
@@ -114,7 +127,5 @@ function Game() {
 }
 
 const game = Game();
-do {
-    game.startGame();
-} while (game.playAgain() == true);
+game.startGame();
 
