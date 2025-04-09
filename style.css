@@ -24,6 +24,11 @@ body {
 }
 
 .restart {
-    background-color: gray;
+    background-color: crimson;
     padding: 12px;
+}
+
+.message {
+    font-size: 32px;
+    height: 40px;
 }

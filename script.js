@@ -1,5 +1,6 @@
 const grid = document.querySelector('.board');
 const restart = document.querySelector('.restart');
+const message = document.querySelector('.message');
 
 function Gameboard() {
     // prep board
@@ -34,7 +35,6 @@ function Gameboard() {
     }
 
     const isLegalMove = (move) => { /* verify the move as legal */ 
-        console.log('hi');
         return gameState[move - 1] == 0;
     };
 
@@ -82,6 +82,7 @@ function Game() {
     let board;
     let players = [null, null];
     let catGame;
+    const CELLS = 9;
 
     const startGame = () => {
         board = Gameboard();
@@ -89,8 +90,9 @@ function Game() {
         players[1] = Player('Bob', 2);
         turn = 0;
         catGame = false;
+        message.textContent = '';
 
-        for (i = 1; i <= 9; i++) {
+        for (i = 1; i <= CELLS; i++) {
             const cell = document.querySelector(`.board div:nth-child(${i})`)
             cell.dataset.order = i;
             cell.addEventListener('click', () => {
@@ -104,17 +106,31 @@ function Game() {
     const getMove = (move) => {
         if (board.hasWon() != 0 || catGame == true) {return;}
         if (!board.isLegalMove(move)) {return;}
-        if (turn == 9) {
-            console.log('cat game');
-            catGame = true;
-            return;
-        }
 
         const activePlayer = players[turn % 2];   
         board.place(move, activePlayer.marker);
-        console.log(move);
         board.display();
         turn ++;
+        console.log(turn);
+
+        if (turn == 9) {
+            catGame = true;
+        }
+
+        if (board.hasWon() != 0 || catGame) {
+            announceWinner(board.hasWon());
+        }
+    }
+
+    const announceWinner = (winner) => {
+        switch (winner) {
+            case 0:
+                message.textContent = 'Cat Game';
+                break;
+            default:
+                message.textContent = `${players[winner - 1].name} wins!`;
+                break;
+        }
     }
 
     const playAgain = () => {
@@ -131,7 +147,6 @@ let game = Game();
 game.startGame();
 
 restart.addEventListener('click', () => {
-    game = Game();
     game.startGame();
 });
 
