@@ -1,8 +1,10 @@
 const grid = document.querySelector('.board');
 const restart = document.querySelector('.restart');
 const message = document.querySelector('.message');
-const nameBox1 = document.querySelector('#player-name-1');
-const nameBox2 = document.querySelector('#player-name-2');
+const name1 = document.querySelector('#player-name-1');
+const name2 = document.querySelector('#player-name-2');
+const score1 = document.querySelector('#score-1');
+const score2 = document.querySelector('#score-2');
 
 function Gameboard() {
     // prep board
@@ -86,12 +88,13 @@ function Game() {
     let board;
     let players = [null, null];
     let catGame;
+    let scores = [0, 0, 0] // The first score is for cat games, even though it isn't displayed
     const CELLS = 9;
 
     const startGame = () => {
         board = Gameboard();
-        players[0] = Player(nameBox1.value, 1);
-        players[1] = Player(nameBox2.value, 2);
+        players[0] = Player(name1.value, 1);
+        players[1] = Player(name2.value, 2);
         turn = 0;
         catGame = false;
         message.textContent = '';
@@ -104,6 +107,7 @@ function Game() {
             });
         }
 
+        updateScores();
         board.display();
     }
 
@@ -134,6 +138,14 @@ function Game() {
                 message.textContent = `${players[winner - 1].name} wins!`;
                 break;
         }
+        scores[winner] ++;
+
+        updateScores();
+    }
+
+    const updateScores = () => {
+        score1.textContent = scores[1];
+        score2.textContent = scores[2];
     }
 
     const playAgain = () => {

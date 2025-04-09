@@ -7,8 +7,18 @@ body {
     gap: 16px;
 }
 
-.title {
+.title-container {
+    display: flex;
+    gap: 24px;
     font-size: 72px;
+}
+
+#score-1 {
+    color: blue;
+}
+
+#score-2 {
+    color: red;
 }
 
 .player-selection-container {
@@ -35,7 +45,8 @@ body {
 }
 
 .restart {
-    background-color: red;
+    /* color: white; */
+    background-color: darkgray;
     padding: 12px;
 }
 
