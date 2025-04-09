@@ -1,6 +1,8 @@
 const grid = document.querySelector('.board');
 const restart = document.querySelector('.restart');
 const message = document.querySelector('.message');
+const nameBox1 = document.querySelector('#player-name-1');
+const nameBox2 = document.querySelector('#player-name-2');
 
 function Gameboard() {
     // prep board
@@ -71,6 +73,8 @@ function Gameboard() {
 }
 
 function Player(name, marker) { 
+    // Ascribes a default name if none chosen
+    name = name == '' ? `Player ${marker}` : name;
     return {
         name,
         marker,
@@ -86,8 +90,8 @@ function Game() {
 
     const startGame = () => {
         board = Gameboard();
-        players[0] = Player('Alice', 1);
-        players[1] = Player('Bob', 2);
+        players[0] = Player(nameBox1.value, 1);
+        players[1] = Player(nameBox2.value, 2);
         turn = 0;
         catGame = false;
         message.textContent = '';
@@ -111,7 +115,6 @@ function Game() {
         board.place(move, activePlayer.marker);
         board.display();
         turn ++;
-        console.log(turn);
 
         if (turn == 9) {
             catGame = true;

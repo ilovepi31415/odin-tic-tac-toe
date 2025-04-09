@@ -11,6 +11,17 @@ body {
     font-size: 72px;
 }
 
+.player-selection-container {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+}
+
+.selector {
+    display: flex;
+    flex-direction: column;
+}
+
 .board {
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
@@ -24,7 +35,7 @@ body {
 }
 
 .restart {
-    background-color: crimson;
+    background-color: red;
     padding: 12px;
 }
 
